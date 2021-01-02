@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,8 @@
 		4D4D44EB259C5B4900AE4456 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D4D44E9259C5B4900AE4456 /* Main.storyboard */; };
 		4D4D44ED259C5B4C00AE4456 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4D4D44EC259C5B4C00AE4456 /* Assets.xcassets */; };
 		4D4D44F0259C5B4C00AE4456 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4D4D44EE259C5B4C00AE4456 /* LaunchScreen.storyboard */; };
-		4D5BA3E2259F8EB500E51603 /* question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5BA3E1259F8EB500E51603 /* question.swift */; };
+		4D5BA3E725A0462100E51603 /* topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D5BA3E625A0462100E51603 /* topic.swift */; };
+		4D5BA3EB25A046D900E51603 /* CodableCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 4D5BA3EA25A046D900E51603 /* CodableCSV */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +26,7 @@
 		4D4D44EC259C5B4C00AE4456 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4D4D44EF259C5B4C00AE4456 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4D4D44F1259C5B4C00AE4456 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4D5BA3E1259F8EB500E51603 /* question.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = question.swift; sourceTree = "<group>"; };
+		4D5BA3E625A0462100E51603 /* topic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = topic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4D5BA3EB25A046D900E51603 /* CodableCSV in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -61,7 +63,7 @@
 				4D4D44E3259C5B4900AE4456 /* AppDelegate.swift */,
 				4D4D44E5259C5B4900AE4456 /* SceneDelegate.swift */,
 				4D4D44E7259C5B4900AE4456 /* ViewController.swift */,
-				4D5BA3E1259F8EB500E51603 /* question.swift */,
+				4D5BA3E625A0462100E51603 /* topic.swift */,
 				4D4D44E9259C5B4900AE4456 /* Main.storyboard */,
 				4D4D44EC259C5B4C00AE4456 /* Assets.xcassets */,
 				4D4D44EE259C5B4C00AE4456 /* LaunchScreen.storyboard */,
@@ -86,6 +88,9 @@
 			dependencies = (
 			);
 			name = multipleChoice;
+			packageProductDependencies = (
+				4D5BA3EA25A046D900E51603 /* CodableCSV */,
+			);
 			productName = multipleChoice;
 			productReference = 4D4D44E0259C5B4900AE4456 /* multipleChoice.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +118,9 @@
 				Base,
 			);
 			mainGroup = 4D4D44D7259C5B4900AE4456;
+			packageReferences = (
+				4D5BA3E925A046D900E51603 /* XCRemoteSwiftPackageReference "CodableCSV" */,
+			);
 			productRefGroup = 4D4D44E1259C5B4900AE4456 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -141,7 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D4D44E8259C5B4900AE4456 /* ViewController.swift in Sources */,
-				4D5BA3E2259F8EB500E51603 /* question.swift in Sources */,
+				4D5BA3E725A0462100E51603 /* topic.swift in Sources */,
 				4D4D44E4259C5B4900AE4456 /* AppDelegate.swift in Sources */,
 				4D4D44E6259C5B4900AE4456 /* SceneDelegate.swift in Sources */,
 			);
@@ -345,6 +353,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4D5BA3E925A046D900E51603 /* XCRemoteSwiftPackageReference "CodableCSV" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dehesa/CodableCSV";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4D5BA3EA25A046D900E51603 /* CodableCSV */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D5BA3E925A046D900E51603 /* XCRemoteSwiftPackageReference "CodableCSV" */;
+			productName = CodableCSV;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4D4D44D8259C5B4900AE4456 /* Project object */;
 }

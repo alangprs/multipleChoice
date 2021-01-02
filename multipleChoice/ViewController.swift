@@ -1,6 +1,22 @@
 
-
 import UIKit
+import CodableCSV
+extension Topic {
+    static var data: [Self] {
+        var array = [Self]()
+        if let data = NSDataAsset(name: "題目.tex")?.data {
+            let decoder = CSVDecoder {
+                $0.headerStrategy = .firstLine
+            }
+            do {
+                array = try decoder.decode([Self].self, from: data)
+            } catch {
+                print(error)
+            }
+        }
+        return array
+    }
+}
 
 class ViewController: UIViewController {
     //顯示問題
@@ -9,6 +25,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var LabelView: UILabel!
     //顯示第幾題的label
     @IBOutlet weak var answerView: UILabel!
+    @IBOutlet weak var fraction: UILabel!//顯示分數
+    
     
     //問題ABC
     @IBOutlet weak var answerNumberA: UIButton!
@@ -17,106 +35,96 @@ class ViewController: UIViewController {
     @IBOutlet weak var answerNumberD: UIButton!
     
   
-    var questions = [Question]()//加入問題的array
-    var index = 0 //存questions陣列的題目編號
-    var option = [""]
-    var answerViewNumber = 1 //存目前第幾題
     
-    //問題選項亂數
-    func randomAnswer(){
-    option = [questions[index].答案,questions[index].選項1,questions[index].選項2,questions[index].選項3]
-    option.shuffle()
-    answerNumberA.setTitle(option[0], for: .normal)
-    answerNumberB.setTitle(option[1], for: .normal)
-    answerNumberC.setTitle(option[2], for: .normal)
-    answerNumberD.setTitle(option[3], for: .normal)
-    }
+    var index = 0 //存questionsarray的題目編號
+    var option = [""] //存答案array 用來製造亂數
+    var answerViewNumber = 1 //存目前第幾題
+    var fractions = 0 //存分數
+    
+    //讀題庫裡的array
+    var topics = Topic.data //題目就在topics裡面了
      
+    //題目顯示 答案顯示、亂數func
+    func topicFunc(){
+        //顯示題目
+        questionLabel.text = topics[index].question
+       
+        
+        //將答案存入option Array 製作答案順序亂數排列
+        option = [topics[index].rightAnswer,topics[index].answer1,topics[index].answer2,topics[index].answer3]
+        //顯示答案亂數
+        option.shuffle()
+        //顯示答案選項
+        answerNumberA.setTitle(option[0], for: .normal)
+        answerNumberA.titleLabel?.numberOfLines = 0 //讓button字允許超過一行
+        
+        answerNumberB.setTitle(option[1], for: .normal)
+        answerNumberB.titleLabel?.numberOfLines = 0
+        
+        answerNumberC.setTitle(option[2], for: .normal)
+        answerNumberC.titleLabel?.numberOfLines = 0
+        
+        answerNumberD.setTitle(option[3], for: .normal)
+        answerNumberD.titleLabel?.numberOfLines = 0
+       
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
-        //創造題目
-       let questions0 = Question(問題: "台灣最高山是哪座", 答案: "玉山", 選項1: "雪山", 選項2: "大霸尖山", 選項3: "南湖大山")
-        questions.append(questions0)
-       
-        
-        let questions1 = Question(問題: "台灣有風城之稱的城市是哪", 答案: "新竹", 選項1: "基隆", 選項2: "桃園", 選項3: "屏東")
-         questions.append(questions1)
-       
-        let questions2 = Question(問題: "太魯閣國家公園佔地面積多少", 答案: "920坪方公里", 選項1: "900平方公里", 選項2: "850平方公里", 選項3: "800平方公里")
-         questions.append(questions2)
-      
-        let questions3 = Question(問題: "跨台灣花蓮、南投、台中三個城市的國家公園是？", 答案: "太魯閣國家公園", 選項1: "陽明山國家公園", 選項2: "玉山國家公園", 選項3: "雪霸國家公園")
-         questions.append(questions3)
-       
-        let questions4 = Question(問題: "台灣第一個24H營業的是什麼店？", 答案: "永和豆漿", 選項1: "7-11", 選項2: "全家便利商店", 選項3: "麥當勞")
-         questions.append(questions4)
-        
-        let questions5 = Question(問題: "台灣唯一不靠海的城市是？", 答案: "南投", 選項1: "嘉義", 選項2: "彰化", 選項3: "雲林")
-         questions.append(questions5)
-       
-        let questions6 = Question(問題: "台灣保育戰地的國家公園為哪座？", 答案: "金門國家公園", 選項1: "南方四島國家公園", 選項2: "雪霸國家公園", 選項3: "太魯閣國家公園")
-        
-         questions.append(questions6)
-        let questions7 = Question(問題: "雪山隧道全長多少？", 答案: "12.9公里", 選項1: "10.9公里", 選項2: "9.9公里", 選項3: "8.9公里")
-         questions.append(questions7)
-        questions.shuffle() //隨機亂數排列題目
-        questionLabel.text = questions[index].問題 //顯示問題
-        answerView.text = "第\(answerViewNumber)題" //顯示目前第幾題
-        randomAnswer()//答案顯示順序亂數func
-        
-        
+        topics.shuffle()//題目亂數
+        topicFunc() //題目顯示 答案顯示、亂數func
+        fraction.text = "分數:\(fractions)" //顯示分數
+
     }
     //下一題按鈕
     @IBAction func nextQuesrion(_ sender: UIButton) {
-        index = index + 1 //題目＋1
-                answerViewNumber = answerViewNumber + 1 //目前答題數+1
-                LabelView.text = "" //清空狀態文字
-                if index == questions.count{
-                    index = 0
-                    questions.shuffle() //隨機亂數排列題目
-                    questionLabel.text = questions[index].問題
-                    randomAnswer()
-                    answerView.text = "最後一題"
-                    answerViewNumber = 0 //顯示目前題目歸零
-                }else {
-                    questionLabel.text = questions[index].問題
-                    randomAnswer()
-                    answerView.text = "第\(answerViewNumber)題"
-                }
+        
+        if index == 9{ //如果已經從題目array拿出第10題
+            
+            if fractions == 100{
+                LabelView.text = "哇！\(fractions)分\n有考慮當教授嗎？"
+            }else if fractions > 80{
+                LabelView.text = "哇！\(fractions)分\n對台灣很熟喔？"
+            }else if fractions > 60{
+                LabelView.text = "哈！有\(fractions)分\n還好免強及格"
+            }else{
+                LabelView.text = "痾！才\(fractions)分\n你是台灣人嗎"
+            }
+            LabelView.text = "最後一題了"
+            
+        }else{
+            index = index + 1 //題目array跳下一題編號
+            answerViewNumber = answerViewNumber + 1 //答題數增加1
+            answerView.text = "第\(answerViewNumber)題" //更新答題數
+            topicFunc() //題目顯示、亂數 答案顯示、亂數func
+            LabelView.text = ""
+        }
         
     }
     //答案選擇
     @IBAction func chooseAnswer(_ sender: UIButton) { //選擇答案button
-        var rightAnswer = questions[index].答案
-        let selectAnswer = sender.titleLabel?.text
-
-        answerNumberA.setTitle(option[0], for: .normal)
-        answerNumberB.setTitle(option[1], for: .normal)
-        answerNumberC.setTitle(option[2], for: .normal)
-        answerNumberD.setTitle(option[3], for: .normal)
-        if selectAnswer == rightAnswer{
+        if sender.titleLabel?.text == topics[index].rightAnswer{
+            LabelView.text = "🎇恭喜答對🎇"
+            fractions = fractions + 10
+            fraction.text = "分數\(fractions)" //分數+10
             
-            LabelView.text = "🎇恭喜答對了🎇"
             
         }else{
-            LabelView.text = "😞不對喔"
+            LabelView.text = "🙈不對喔🙈"
+           
         }
-       
+        
         
     }
     //再來一次
     @IBAction func again(_ sender: Any) {
-        questions.shuffle() //隨機亂數排列題目
         index = 0
-        
-        questionLabel.text = questions[index].問題
-        randomAnswer()//答案顯示順序亂數func
         LabelView.text = ""
         answerViewNumber = 1 //目前題數變回1
         answerView.text = "第\(answerViewNumber)題" //顯示目前第幾題
-        
+        topics.shuffle()//題目亂數
+        topicFunc() //題目顯示 答案顯示、亂數func
+        fractions = 0 //分數歸零
     }
     
     
